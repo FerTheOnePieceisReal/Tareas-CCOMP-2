@@ -1,37 +1,40 @@
-#include<iostream>
-void swap(int &a, int &b){
-    int temp;
-    temp=a;
-    a=b;
-    b=temp;
-}
-void merge(int *p, int*q){
-    //Final del array
-    int *final=p+(q-p)*2;
-    //Numero de elementos del array
-    int num_elem=(final-p);
-    int mitad=num_elem/2;
-    int m=mitad;
-    if(p<final && q<final){
-        for(int i=0;i<m;i++){
-            for(int k=0;k<mitad;k++){
-                if(*(p+k)>*(q+k))
-                    swap(*(p+k),*(q+k));
-            }
-            num_elem-=2;
-            mitad=num_elem/2;
-            p=p+1;
-        }
-    }
-}    
+#include <iostream>
 
-int main(){
-    int arr[6]={2,6,30,3,11,21};
-    int *p=arr;
-    int*q=arr+3;
-    merge(p,q);
-    for(int i=0;i<6;i++){
-        std::cout<<arr[i]<<" ";
+void swap(int &a, int &b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void merge(int* p, int* q, int*final) {
+    int* current = p;
+    int c=0;
+    while (current <q) {
+        int* left = current;
+        int* right = q;
+        
+        while (right < final-c) {
+            if (*left > *right) {
+                swap(*left, *right);
+            }
+            left++;
+            right++;
+        }
+        current++;
+        c++;
     }
+}
+
+int main() {
+    int arr[] = {2, 4, 30, 3, 11, 21};
+    
+    int* p = arr;
+    int* q = arr+3;
+    int*final=p+(q-p)*2;
+    merge(p,q, final);
+    for(int*a=p;a<p+6;a++){
+        std::cout << *a << " ";
+    }
+    
     return 0;
 }
