@@ -1,4 +1,41 @@
 #include<iostream>
+#include <ctime>
+#include <cstdlib>
+
+char (*createMatrizRandom())[3] {
+    char (*matriz)[3] = new char[3][3]; // Reservamos memoria dinámica para 3x3 caracteres
+    int* numeros = new int[8];
+
+    // Inicializar números del 1 al 8 usando punteros
+    int* p = numeros;
+    int valor = 1;
+    while (p < numeros + 8) {
+        *p = valor;
+        ++p;
+        ++valor;
+    }
+
+    // Mezclar los números usando punteros
+    srand(time(0));
+    for (int* end = numeros + 7; end > numeros; --end) {
+        int* randomPos = numeros + (rand() % (end - numeros + 1));
+        int temp = *end;
+        *end = *randomPos;
+        *randomPos = temp;
+    }
+
+    // Copiar los números a la matriz (solo con punteros)
+    char* m = &matriz[0][0]; // Apuntamos al primer char de la matriz
+    for (p = numeros; p < numeros + 8; ++p, ++m) {
+        *m = *p + '0'; // Convertimos número a carácter
+    }
+
+    *m = ' '; // Última posición: espacio
+
+    delete[] numeros; // Liberamos memoria
+    return matriz; // Retornamos el puntero a la matriz
+}
+
 char* searchEspacio( char (*k)[3]){
     char *espacio;
     for(char(*p)[3]=k;p<k+3;p++){
@@ -118,6 +155,8 @@ void Game(char (*k)[3]){
 int main(){
     char matriz[3][3]={{'1','2','3'},{'4','5','6'},{'7',' ','8'}};
     char (*k)[3]=matriz;
-    Game(k);
+    char (*q)[3]=createMatrizRandom();
+    Game(q);
+    //Game(k);
     return 0;
 }
